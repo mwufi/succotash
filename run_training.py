@@ -1,9 +1,20 @@
 import argparse
+import random
 
+import matplotlib.pyplot as plt
+import numpy as np
 import torch
+import torch.nn.parallel
+import torch.nn.parallel
+import torch.utils.data
+import torch.utils.data
+import torchvision.utils as vutils
 
+from data import create_dataset
+from models import MLP
 from utils import Config
-from models import Bottleneck, MLP
+
+# %matplotlib inline
 
 B = 13
 C = 3
@@ -18,7 +29,7 @@ def print_diagnostics():
 
 def create_model(args):
 	print('model', args)
-	return MLP([H*W*C, 100, 10])
+	return MLP([H * W * C, 100, 10])
 
 
 def create_optimiser(args):
@@ -28,11 +39,30 @@ def create_optimiser(args):
 
 def create_dataloader(args):
 	print('data', args)
-	return 4
+	dataset = create_dataset(args)
+
+	# Create the dataloader
+	dataloader = torch.utils.data.DataLoader(dataset, batch_size=args.batch_size,
+											 shuffle=True,
+											 num_workers=args.workers)
+	return dataloader
+
+
+def set_random_seed(args):
+	"""Set a seed for reproducibility"""
+	if isinstance(args.random_seed, int):
+		manualSeed = args.random_seed
+	else:
+		manualSeed = random.randint(1, 10000)
+
+	print("Random Seed: ", manualSeed)
+	random.seed(manualSeed)
+	torch.manual_seed(manualSeed)
 
 
 def train(args):
 	print('training', args)
+	set_random_seed(args)
 
 	for epoch in range(args.epochs):
 		print('Epoch {}'.format(epoch))
@@ -48,14 +78,18 @@ if __name__ == "__main__":
 
 	c = Config(args.config)
 
-	data = create_dataloader(c.data)
+	dataloader = create_dataloader(c.data)
 	model = create_model(c.model)
 
-	x = torch.rand((B, C, H, W))
-	z = x.reshape((B, H * W * C))
-	t = model(z)
+	# Decide which device we want to run on
+	device = torch.device("cuda:0" if (torch.cuda.is_available() and c.training.gpus > 0) else "cpu")
 
-	p = Bottleneck(3, 2)
-	output = p(x)
-
-	train(c.training)
+	# Plot some training images
+	print('data loading')
+	real_batch = next(iter(dataloader))
+	plt.figure(figsize=(8, 8))
+	plt.axis("off")
+	plt.title("Training Images")
+	plt.imshow(
+		np.transpose(vutils.make_grid(real_batch[0].to(device)[:64], padding=2, normalize=True).cpu(), (1, 2, 0)))
+	plt.show()

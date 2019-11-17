@@ -3,10 +3,12 @@ data:
   workers: 2
   image_size: 64
   n_channels: 3
+  batch_size: 128
+
 
 training:
+  random_seed: 10
   gpus: 1
-  batch_size: 128
   epochs: 5
   lr: 2e-4
 
