@@ -1,0 +1,22 @@
+tag: perceptron
+version: v1
+author: Zen
+
+model:
+  id: MLP
+  layer: [1,2,3]
+  bias: True
+  activation: relu
+  last_activation: False
+
+data:
+  id: hymenoptera_data
+  batch_size: 56
+  load_asynchronously: True
+  n_workers: 10
+
+training:
+  gpus: 4
+  location: aws.google.com
+  alert:
+    every: 20 minutes

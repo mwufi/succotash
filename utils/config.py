@@ -1,10 +1,9 @@
 from pathlib import Path
-
 import yaml
 
 
 class Config:
-	def __init__(self, filename: str):
+	def __init__(self, filename: Path):
 		self.dict = dict()
 
 		if not filename:
@@ -12,7 +11,6 @@ class Config:
 
 		with open(filename, 'r') as ymlfile:
 			cfg = yaml.load(ymlfile, Loader=yaml.SafeLoader)
-			print('Loaded...', cfg)
 			for k, v in cfg.items():
 				self.add_item(k, Config.from_dict(v))
 
@@ -36,9 +34,3 @@ class Config:
 	def __repr__(self):
 		return self.dict.__repr__()
 
-
-def test_config():
-	print('Current working dir:', Path.cwd())
-	c = Config(Path.cwd() / 'utils' / 'config.yml')
-	print('c.mysql', c.mysql)
-	print('c.other.preprocessing_queue', c.other.preprocessing_queue)
