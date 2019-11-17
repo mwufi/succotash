@@ -1,6 +1,7 @@
-from models.basic import ModelBase
+from models import ModelBase
 
 
 class DCGAN(ModelBase):
-	def __init__(self):
-		pass
+	def _init__(self):
+		super().__init__()
+		self._post_init()

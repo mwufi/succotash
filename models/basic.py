@@ -1,5 +1,4 @@
 import logging
-from abc import abstractmethod
 from typing import Any
 
 from numpy import prod
@@ -21,13 +20,6 @@ class ModelBase(nn.Module):
 	def __init__(self, *args, **kwargs):
 		super().__init__()
 		self.logger = logging.getLogger(self.name)
-
-		self._init(*args, **kwargs)
-		self._post_init()
-
-	@abstractmethod
-	def _init(self, *args, kwargs):
-		pass
 
 	def _post_init(self):
 		print()
@@ -61,7 +53,8 @@ class ModelBase(nn.Module):
 class MLP(ModelBase):
 	name = 'MLP'
 
-	def _init(self, layer_sizes):
+	def __init__(self, layer_sizes):
+		super().__init__()
 		if len(layer_sizes) < 1:
 			raise ValueError('You have to have an input dimension')
 		if len(layer_sizes) < 2:
@@ -73,6 +66,7 @@ class MLP(ModelBase):
 		]
 
 		self.layers = nn.Sequential(*f)
+		self._post_init()
 
 	def _forward(self, tensor: Any):
 		return self.layers(tensor)

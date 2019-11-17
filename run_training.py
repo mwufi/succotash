@@ -3,6 +3,7 @@ import argparse
 import torch
 
 from utils import Config
+from models import Bottleneck, MLP
 
 B = 13
 C = 3
@@ -17,7 +18,7 @@ def print_diagnostics():
 
 def create_model(args):
 	print('model', args)
-	return 4
+	return MLP([H*W*C, 100, 10])
 
 
 def create_optimiser(args):
@@ -49,11 +50,12 @@ if __name__ == "__main__":
 
 	data = create_dataloader(c.data)
 	model = create_model(c.model)
-	train(c.training)
 
-# x = torch.rand((B, C, H, W))
-# z = x.reshape((B, H * W * C))
-# t = model(z)
-#
-# p = Bottleneck(3, 2)
-# output = p(x)
+	x = torch.rand((B, C, H, W))
+	z = x.reshape((B, H * W * C))
+	t = model(z)
+
+	p = Bottleneck(3, 2)
+	output = p(x)
+
+	train(c.training)
