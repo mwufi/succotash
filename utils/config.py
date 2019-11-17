@@ -9,6 +9,8 @@ class Config:
 		if not filename:
 			return
 
+		print(f'Loading config: {filename}')
+
 		with open(filename, 'r') as ymlfile:
 			cfg = yaml.load(ymlfile, Loader=yaml.SafeLoader)
 			for k, v in cfg.items():
