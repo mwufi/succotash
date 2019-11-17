@@ -17,9 +17,21 @@ logging.basicConfig(
 
 
 class ModelBase(nn.Module):
-	def __init__(self):
+	def __init__(self, *args, **kwargs):
 		super().__init__()
 		self.logger = logging.getLogger(self.name)
+
+		self._init(*args, **kwargs)
+		self._post_init()
+
+
+	def _post_init(self):
+		print()
+		print(f'(init)'.center(40, '-'))
+		print(f'{self.name}')
+		print(f'{self.trainable_parameters} trainable parameters')
+		print('(end of init)'.center(40, '-'))
+		print()
 
 	@property
 	def trainable_parameters(self):
@@ -45,9 +57,7 @@ class ModelBase(nn.Module):
 class MLP(ModelBase):
 	name = 'MLP'
 
-	def __init__(self, layer_sizes):
-		super().__init__()
-
+	def _init(self, layer_sizes):
 		if len(layer_sizes) < 1:
 			raise ValueError('You have to have an input dimension')
 		if len(layer_sizes) < 2:
@@ -59,13 +69,6 @@ class MLP(ModelBase):
 		]
 
 		self.layers = nn.Sequential(*f)
-
-		print()
-		print(f'(init)'.center(40, '-'))
-		print(f'{self.name}')
-		print(f'{self.trainable_parameters} trainable parameters')
-		print('(end of init)'.center(40, '-'))
-		print()
 
 	def _forward(self, tensor: Any):
 		return self.layers(tensor)
