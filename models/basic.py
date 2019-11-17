@@ -22,12 +22,7 @@ class ModelBase(nn.Module):
 		self.logger = logging.getLogger(self.name)
 
 	def _post_init(self):
-		print()
-		print(f'(init)'.center(40, '-'))
-		print(f'{self.name}')
-		print(f'{self.trainable_parameters} trainable parameters')
-		print('(end of init)'.center(40, '-'))
-		print()
+		pass
 
 	@property
 	def trainable_parameters(self):
