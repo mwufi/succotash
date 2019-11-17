@@ -69,6 +69,18 @@ def train(args):
 		print('Done!')
 
 
+class Trainer:
+	config: Config
+
+	def __init__(self, config):
+		self.config = config
+		self.dataloader = create_dataloader(config.data)
+		self.model = create_model(config.model)
+
+	def start_training(self):
+		print('not training yet!')
+
+
 if __name__ == "__main__":
 	print_diagnostics()
 
@@ -77,19 +89,18 @@ if __name__ == "__main__":
 	args = parser.parse_args()
 
 	c = Config(args.config)
-
-	dataloader = create_dataloader(c.data)
-	model = create_model(c.model)
+	t = Trainer(c)
 
 	# Decide which device we want to run on
 	device = torch.device("cuda:0" if (torch.cuda.is_available() and c.training.gpus > 0) else "cpu")
 
 	# Plot some training images
-	print('data loading')
-	real_batch = next(iter(dataloader))
+	real_batch = next(iter(t.dataloader))
 	plt.figure(figsize=(8, 8))
 	plt.axis("off")
 	plt.title("Training Images")
 	plt.imshow(
 		np.transpose(vutils.make_grid(real_batch[0].to(device)[:64], padding=2, normalize=True).cpu(), (1, 2, 0)))
 	plt.show()
+
+	t.start_training()
