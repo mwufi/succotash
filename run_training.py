@@ -11,7 +11,7 @@ import torch.utils.data
 import torchvision.utils as vutils
 
 from data import create_dataset
-from models import MLP
+from models import MLP, DCGAN
 from utils import Config
 
 # %matplotlib inline
@@ -29,7 +29,10 @@ def print_diagnostics():
 
 def create_model(args):
 	print('model', args)
-	return MLP([H * W * C, 100, 10])
+	if args.id.lower() == 'mlp':
+		return MLP([H * W * C, 100, 10])
+	elif args.id.lower() == 'dcgan':
+		return DCGAN(args)
 
 
 def create_optimiser(args):
@@ -78,7 +81,8 @@ class Trainer:
 		self.model = create_model(config.model)
 
 	def start_training(self):
-		print('not training yet!')
+		print(self.model)
+		print('Going to start training soon!')
 
 
 if __name__ == "__main__":
