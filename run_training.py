@@ -1,8 +1,10 @@
 import torch
 
 from models.basic import MLP
+from models.bottleneck import Bottleneck
 
 B = 13
+C = 3
 H = 40
 W = 2
 
@@ -13,15 +15,18 @@ def print_diagnostics():
 
 
 def create_model():
-	x = MLP([W*H, 10])
+	x = MLP([C*W*H, 10])
 	return x
 
 
 if __name__ == "__main__":
 	print_diagnostics()
 
-	x = torch.rand((B, H, W), names=('batch_size', 'height', 'width'))
-	z = x.reshape((B, H*W))
+	x = torch.rand((B, C, H, W))
+	z = x.reshape((B, H*W*C))
 	model = create_model()
+	
+	p = Bottleneck(3, 2)
+	output = p(x)
 
 	t = model(z)
