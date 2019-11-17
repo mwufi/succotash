@@ -27,10 +27,10 @@ class ModelBase(nn.Module):
 		params = sum([prod(p.size()) for p in model_parameters])
 		return params
 
-	def preprocess(self, *input):
-		for t in input:
+	def preprocess(self, *inputs):
+		for t in inputs:
 			self.logger.info(f'input size: {t.size()}')
-		return input
+		return inputs
 
 	def postprocess(self, tensor_outputs):
 		self.logger.info(f'output size: {tensor_outputs.size()}')
