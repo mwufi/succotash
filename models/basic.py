@@ -1,4 +1,5 @@
 import logging
+from abc import abstractmethod
 from typing import Any
 
 from numpy import prod
@@ -24,6 +25,9 @@ class ModelBase(nn.Module):
 		self._init(*args, **kwargs)
 		self._post_init()
 
+	@abstractmethod
+	def _init(self, *args, kwargs):
+		pass
 
 	def _post_init(self):
 		print()
