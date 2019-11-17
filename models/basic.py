@@ -27,8 +27,8 @@ class ModelBase(nn.Module):
 		params = sum([prod(p.size()) for p in model_parameters])
 		return params
 
-	def preprocess(self, *input):
-		for t in input:
+	def preprocess(self, *inputs):
+		for t in inputs:
 			self.logger.info(f'input size: {t.size()}')
 		return input
 
