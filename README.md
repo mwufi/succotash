@@ -31,3 +31,6 @@ Going to start training soon!
 ...
 
 ```
+
+It also shows you a window:
+<img src="https://raw.githubusercontent.com/mwufi/succotash/master/docs/batch.png" width="75%">
