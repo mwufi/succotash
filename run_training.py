@@ -1,9 +1,8 @@
+import argparse
+
 import torch
 
 from utils import Config
-import argparse
-from models.basic import MLP
-from models.bottleneck import Bottleneck
 
 B = 13
 C = 3
@@ -17,9 +16,26 @@ def print_diagnostics():
 
 
 def create_model(args):
-	print(args)
-	x = MLP([C*W*H, 10])
-	return x
+	print('model', args)
+	return 4
+
+
+def create_optimiser(args):
+	print('optimiser', args)
+	return 4
+
+
+def create_dataloader(args):
+	print('data', args)
+	return 4
+
+
+def train(args):
+	print('training', args)
+
+	for epoch in range(args.epochs):
+		print('Epoch {}'.format(epoch))
+		print('Done!')
 
 
 if __name__ == "__main__":
@@ -31,12 +47,13 @@ if __name__ == "__main__":
 
 	c = Config(args.config)
 
+	data = create_dataloader(c.data)
 	model = create_model(c.model)
+	train(c.training)
 
-	x = torch.rand((B, C, H, W))
-	z = x.reshape((B, H*W*C))
-	t = model(z)
-
-	p = Bottleneck(3, 2)
-	output = p(x)
-
+# x = torch.rand((B, C, H, W))
+# z = x.reshape((B, H * W * C))
+# t = model(z)
+#
+# p = Bottleneck(3, 2)
+# output = p(x)
