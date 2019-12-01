@@ -7,8 +7,8 @@ import torch
 import torch.nn.parallel
 import torch.nn.parallel
 import torch.utils.data
-import torch.utils.data
 import torchvision.utils as vutils
+from torch.optim.lr_scheduler import StepLR
 
 from data import create_dataset
 from models import MLP, DCGAN
@@ -81,8 +81,7 @@ class Trainer:
 		self.model = create_model(config.model)
 
 	def start_training(self):
-		print(self.model)
-		print('Going to start training soon!')
+		pass
 
 
 if __name__ == "__main__":
